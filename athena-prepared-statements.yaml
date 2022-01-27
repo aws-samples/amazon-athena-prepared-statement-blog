@@ -2,25 +2,17 @@ AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   S3QueryResultsBucketName:
     Type: String
-    Description: (Can be left as default) Amazon S3 bucket name for storing Amazon Athena query results
-    Default: "athena-results-bucket-name"
+    Description: Amazon S3 bucket name for storing Amazon Athena query results (bucket name must be globally unique)
   AthenaWorkGroupName:
     Type: String
     Description: (Can be left as default) Amazon Athena WorkGroup name
     Default: "PreparedStatementsWG"
-Conditions:
-  S3BucketNameDefault: !Equals 
-    - !Ref S3QueryResultsBucketName
-    - athena-results-bucket-name
 Resources:
   S3AthenaQueryResultsBucket:
     Type: AWS::S3::Bucket
     Properties: 
       AccessControl: Private
-      BucketName: !If 
-        - S3BucketNameDefault
-        - !Sub athena-results-${AWS::AccountId}-${AWS::Region}
-        - !Ref S3QueryResultsBucketName
+      BucketName: !Ref S3QueryResultsBucketName
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
