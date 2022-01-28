@@ -2,34 +2,18 @@ AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   S3QueryResultsBucketName:
     Type: String
-    Description: Amazon S3 bucket name for storing Amazon Athena query results (bucket name must be globally unique)
+    Description: Amazon S3 bucket name for storing Amazon Athena query results
   AthenaWorkGroupName:
     Type: String
     Description: (Can be left as default) Amazon Athena WorkGroup name
     Default: "PreparedStatementsWG"
 Resources:
-  S3AthenaQueryResultsBucket:
-    Type: AWS::S3::Bucket
-    Properties: 
-      AccessControl: Private
-      BucketName: !Ref S3QueryResultsBucketName
-      BucketEncryption:
-        ServerSideEncryptionConfiguration:
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: 'aws:kms'
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
-      Tags:
-        - Key: Description
-          Value: S3 Bucket for storing Athena Query results
   AthenaWorkGroup:
     Type: AWS::Athena::WorkGroup
     Properties:
       Name: !Ref AthenaWorkGroupName
       State: ENABLED
+      RecursiveDeleteOption: true
       WorkGroupConfiguration:
         EnforceWorkGroupConfiguration: True
         EngineVersion:
@@ -37,12 +21,12 @@ Resources:
         ResultConfiguration:
           EncryptionConfiguration:
             EncryptionOption: SSE_S3
-          OutputLocation: !Sub s3://${S3AthenaQueryResultsBucket}/
+          OutputLocation: !Sub s3://${S3QueryResultsBucketName}/results/
   GlueDatabase:
     Type: AWS::Glue::Database
-    Properties: 
+    Properties:
       CatalogId: !Ref AWS::AccountId
-      DatabaseInput: 
+      DatabaseInput:
         Name: athena_prepared_statements
   GlueTableAmazonReviews:
     Type: AWS::Glue::Table

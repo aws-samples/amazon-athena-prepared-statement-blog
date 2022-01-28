@@ -4,7 +4,6 @@ This is a repository for [Improve reusability and security using Amazon Athena p
 
 #### [athena-prepared-statements.yaml](athena-prepared-statements.yaml) creates the following resources:
 
-* Amazon S3 bucket for storing Athena query results
 * AWS Glue Data Catalog Database for storing metadata tables
 * AWS Glue Data Catalog Table definition with Amazon.com customer reviews
 * Amazon Athena Workgroup
