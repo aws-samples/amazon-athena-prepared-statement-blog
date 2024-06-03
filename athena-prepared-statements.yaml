@@ -51,19 +51,15 @@ Resources:
             Type: string
           - Name: product_id
             Type: string
-          - Name: product_parent
-            Type: string
           - Name: product_title
             Type: string
           - Name: star_rating
-            Type: int
+            Type: bigint
           - Name: helpful_votes
-            Type: int
+            Type: bigint
           - Name: total_votes
-            Type: int
-          - Name: vine
-            Type: string
-          - Name: verified_purchase
+            Type: bigint
+          - Name: insight
             Type: string
           - Name: review_headline
             Type: string
@@ -71,11 +67,11 @@ Resources:
             Type: string
           - Name: review_date
             Type: bigint
-          - Name: year
-            Type: int
+          - Name: review_year
+            Type: bigint
           Compressed: false
           InputFormat: org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat
-          Location: s3://amazon-reviews-pds/parquet/
+          Location: s3://aws-bigdata-blog/generated_synthetic_reviews/data/
           NumberOfBuckets: -1
           OutputFormat: org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat
           Parameters: {}
